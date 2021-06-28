@@ -11,15 +11,12 @@ namespace Algorithms_and_data_structures
     public class Str
     {
         public string RndString { get; set; }
-        //public HashSet StringHash { get; set; }
 
         public override bool Equals(object obj)
         {
             var str = obj as Str;
-
             if (RndString == null)
                 return false;
-
             return true;
         }
 
@@ -34,7 +31,61 @@ namespace Algorithms_and_data_structures
     {
         static void Main(string[] args)
         {
-            BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
+            //BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
+
+            Tree t = new Tree();
+
+            int countElementTree = 100;
+            Console.SetBufferSize(3000, 300);
+
+            Random rnd = new Random();
+            t.AddItem(50);
+            for (int i = 0; i < countElementTree; i++)
+            {
+                t.AddItem(rnd.Next(0,101));
+            }
+
+            t.PrintTree();
+            Console.ReadLine();
+
+
+
+            //t.AddItem(8);
+            //t.AddItem(4);
+            //t.AddItem(12);
+            //t.AddItem(2);
+            //t.AddItem(6);
+            //t.AddItem(10);
+            //t.AddItem(14);
+            //t.AddItem(1);
+            //t.AddItem(3);
+            //t.AddItem(5);
+            //t.AddItem(7);
+            //t.AddItem(9);
+            //t.AddItem(11);
+            //t.AddItem(13);
+            //t.AddItem(15);
+
+            //t.PrintTree();
+
+            ////t.GetNodeByValue(9);
+            ////t.GetNodeByValue(1);
+            ////t.GetNodeByValue(3);
+            ////t.GetNodeByValue(4);
+            ////t.GetNodeByValue(8);
+
+
+            //t.RemoveItem(9);
+            //t.PrintTree();
+            //t.RemoveItem(12);
+            //t.PrintTree();
+            //t.RemoveItem(8);
+            //t.PrintTree();
+            //t.RemoveItem(4);
+            //t.PrintTree();
+
+
+
             Console.ReadLine();
         }
     }
@@ -46,7 +97,6 @@ namespace Algorithms_and_data_structures
                 {
                     if (array[i] == soughtStr)
                         return true;
-
                 }
                 return false;
             }
@@ -101,10 +151,7 @@ namespace Algorithms_and_data_structures
                     var str = new Str() { RndString = arrayStr[i*900] };
                     SelectHash(hashSet, str);
                 }
-                
             }
         }
 
     }
-
-//}
