@@ -11,20 +11,7 @@ namespace Algorithms_and_data_structures
         public int Value { get; set; }
         public TreeNode LeftChild { get; set; }
         public TreeNode RightChild { get; set; }
-        public TreeNode Parent { get; set; }
-        public int Position { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            var node = obj as TreeNode;
-
-            if (node == null)
-                return false;
-
-            return node.Value == Value;
-        }
     }
-
 
     public interface ITree
     {
@@ -37,65 +24,64 @@ namespace Algorithms_and_data_structures
 
     public class Tree : ITree
     {
-        TreeNode treeNode = new TreeNode();
-        TreeNode tTreeNode = new TreeNode();
+        TreeNode root = new TreeNode();
         int countElements = 0;
+        public TreeNode GetRoot() // корень дерева ??? 
+        {
+            return root;
+        }
 
         public void AddItem(int value) // добавить узел
         {
-            TreeNode tTreeNode = new TreeNode();
+            TreeNode TreeNode = new TreeNode();
+
             if (countElements == 0)
             {
-                treeNode.Parent = null;
-                treeNode.LeftChild = null;
-                treeNode.RightChild = null;
-                treeNode.Value = value;
+                root.Value = value;
+                root.LeftChild = null;
+                root.RightChild = null;
                 countElements = 1;
-                //arrayHelp[0, 2] = 1;
             }
             else
             {
+                TreeNode treeNode = new TreeNode();
+                treeNode = root;
 
-                tTreeNode = treeNode;
-                for (int j = 0; j < countElements * 2; j++)
+                while (true)
                 {
-                    if (tTreeNode.Value >= value)
+                    if (treeNode.Value >= value)
                     {
 
-                        if (tTreeNode.LeftChild == null)
+                        if (treeNode.LeftChild == null)
                         {
                             TreeNode newTtreeNode = new TreeNode();
                             newTtreeNode.Value = value;
-                            newTtreeNode.Parent = tTreeNode;
+                            treeNode.LeftChild = newTtreeNode;
                             newTtreeNode.LeftChild = null;
                             newTtreeNode.RightChild = null;
-                            tTreeNode.LeftChild = newTtreeNode;
                             countElements += 1;
-                            return;
+                            break;
                         }
                         else
                         {
-                            tTreeNode = tTreeNode.LeftChild;
+                            treeNode = treeNode.LeftChild;
                         }
-
-
                     }
                     else
                     {
-                        if (tTreeNode.RightChild == null)
+                        if (treeNode.RightChild == null)
                         {
                             TreeNode newTtreeNode = new TreeNode();
                             newTtreeNode.Value = value;
-                            newTtreeNode.Parent = tTreeNode;
+                            treeNode.RightChild = newTtreeNode;
                             newTtreeNode.LeftChild = null;
                             newTtreeNode.RightChild = null;
-                            tTreeNode.RightChild = newTtreeNode;
                             countElements += 1;
-                            return;
+                            break;
                         }
                         else
                         {
-                            tTreeNode = tTreeNode.RightChild;
+                            treeNode = treeNode.RightChild;
                         }
                     }
                 }
@@ -104,382 +90,226 @@ namespace Algorithms_and_data_structures
 
         public TreeNode GetNodeByValue(int value) //получить узел дерева по значению
         {
-            TreeNode tTreeNode = new TreeNode();
-            tTreeNode = treeNode;
+            TreeNode treeNode = new TreeNode();
+            treeNode = root;
+
             for (int i = 0; i < countElements * 2; i++)
             {
-                if (tTreeNode.Value == value)
+                if (treeNode.Value == value)
                 {
-                    return tTreeNode;
+                    return treeNode;
                 }
-                else if (tTreeNode.Value >= value)
-                    tTreeNode = tTreeNode.LeftChild;
+                else if (treeNode.Value >= value)
+                    treeNode = treeNode.LeftChild;
                 else
-                    tTreeNode = tTreeNode.RightChild;
+                    treeNode = treeNode.RightChild;
             }
             return null;
         }
 
-        public TreeNode GetRoot() // корень дерева ??? 
+        public void RemoveItem(int value) // удалить узел по значению
         {
-            return treeNode;
+            TreeNode treeNode = new TreeNode();
+            TreeNode treeNodeParant = new TreeNode();
+            treeNode = root;
+
+            if (treeNode.Value != value)
+            {
+                for (int i = 0; i < countElements * 2; i++)
+                {
+                    if (treeNode.Value == value)
+                        break;
+                    else if (treeNode.Value >= value)
+                    {
+                        treeNodeParant = treeNode;
+                        treeNode = treeNode.LeftChild;
+                    }
+                    else
+                    {
+                        treeNodeParant = treeNode;
+                        treeNode = treeNode.RightChild;
+                    }
+                }
+
+            }
+            else if (treeNode.Value == value)
+                treeNodeParant = null;
+            else
+                return;
+
+
+
+            TreeNode newTreeNode = new TreeNode();
+            TreeNode newTreeNodeParant = new TreeNode();
+
+            if (treeNode.LeftChild == null && treeNode.RightChild == null) //только корень или лист
+            {
+                if (treeNodeParant.LeftChild.Value == value)
+                    treeNodeParant.LeftChild = null;
+
+                else
+                    treeNodeParant.RightChild = null;
+
+            }
+            //если только один лист ветвления
+            else if ((treeNode.LeftChild != null && treeNode.RightChild == null) || (treeNode.LeftChild == null && treeNode.RightChild != null))
+            {
+                treeNodeParant.LeftChild = treeNode.LeftChild;
+                treeNodeParant.RightChild = treeNode.RightChild;
+            }
+            //корень но с двумя потомками
+            else if (treeNode.LeftChild != null && treeNode.RightChild != null && treeNodeParant == null)
+            {
+                newTreeNode = root.LeftChild;
+                for (int i = 0; i < countElements; i++)
+                {
+                    if (newTreeNode.RightChild == null)
+                        break;
+                    else
+                    {
+                        newTreeNodeParant = newTreeNode;
+                        newTreeNode = newTreeNode.RightChild;
+                    }
+                }
+
+                if (newTreeNode.LeftChild == null)
+                    newTreeNodeParant.RightChild = null;
+                else
+                    newTreeNodeParant.RightChild = newTreeNode.LeftChild;
+
+                newTreeNode.RightChild = root.RightChild;
+                newTreeNode.LeftChild = root.LeftChild;
+                root = newTreeNode;
+            }
+            //корень дерева с одним потомком
+            else if ((treeNode.LeftChild != null && treeNode.RightChild == null && treeNodeParant == null) || (treeNode.LeftChild == null && treeNode.RightChild != null && treeNodeParant == null))
+            {
+                root = newTreeNode;
+            }
+            //ветвь дерева с предком и обоими потомками
+            else
+            {
+                newTreeNode = treeNode.LeftChild;
+                for (int i = 0; i < countElements; i++)
+                {
+                    if (newTreeNode.RightChild == null)
+                        break;
+                    else
+                    {
+                        newTreeNodeParant = newTreeNode;
+                        newTreeNode = newTreeNode.RightChild;
+                    }
+                }
+
+                if (newTreeNode.LeftChild == null)
+                    newTreeNodeParant.RightChild = null;
+                else
+                    newTreeNodeParant.RightChild = newTreeNode.LeftChild;
+
+                if (treeNodeParant.LeftChild.Value == value)
+                    treeNodeParant.LeftChild = newTreeNode;
+                else
+                    treeNodeParant.RightChild = newTreeNode;
+
+
+                newTreeNode.RightChild = treeNode.RightChild;
+                newTreeNode.LeftChild = treeNode.LeftChild;
+
+            }
         }
 
         public void PrintTree() //вывести дерево в консоль
         {
             Console.Clear();
-
-            PaymentPosition();
-
-
-
-            Queue<TreeNode> elementTree = new Queue<TreeNode>();
-            Queue<TreeNode> _elementTree = new Queue<TreeNode>();
-            TreeNode _treeNode = new TreeNode();
-            elementTree.Enqueue(treeNode);
-            _elementTree.Enqueue(treeNode);
-            int widthTree = 1;
-            int countElementWidth = 0;
-
-            //do
-            //{
-
-            //    _treeNode = elementTree.Dequeue();
-
-            //    Console.SetCursorPosition(_treeNode.Position, widthTree);
-            //    Console.WriteLine(_treeNode.Value);
-
-
-            //    if (_treeNode.LeftChild != null)
-            //    {
-            //        _elementTree.Enqueue(_treeNode);
-            //    }
-            //        elementTree.Enqueue(_treeNode.LeftChild);
-
-            //    if (_treeNode.RightChild != null)
-            //    {
-            //        _elementTree.Enqueue(_treeNode);
-            //    }
-            //        elementTree.Enqueue(_treeNode.RightChild);
-            //    widthTree += 1;
-            //} 
-            //while (elementTree.Count() != 0);
-
-
-
-
-            while (true)
-            {
-
-                countElementWidth = elementTree.Count();
-                for (int i = 0; i < countElementWidth; i++)
-                {
-                    _treeNode = elementTree.Dequeue();
-
-                    Console.SetCursorPosition(_treeNode.Position, widthTree);
-                    Console.WriteLine(_treeNode.Value);
-
-                    if (_treeNode.LeftChild != null)
-                    {
-                        elementTree.Enqueue(_treeNode.LeftChild);
-                    }
-
-                    if (_treeNode.RightChild != null)
-                    {
-                        elementTree.Enqueue(_treeNode.RightChild);
-                    }
-
-
-
-                }
-                    
-                    widthTree += 1;
-                if (elementTree.Count() == 0)
-                {
-                    break;
-                }
-            }
-
-
-            
-        }
-
-        private void PaymentPosition()
-        {
-            Queue<TreeNode> elementTree = new Queue<TreeNode>();
-            elementTree.Enqueue(treeNode);
-
-            TreeNode _treeNode = new TreeNode();
-            _treeNode = treeNode;
-
-
-
-            //_treeNode.Position = WidthTree(_treeNode.LeftChild)+120;
-
-            int countLeftElement = WidthTree(_treeNode.LeftChild);
-            int countRightElement = WidthTree(_treeNode.RightChild);
-            _treeNode.Position = countLeftElement;
-            //int countLeftElement = _treeNode.Position;
-            //int countRightElement = _treeNode.Position;
-
-            //if (countLeftElement < countRightElement)
-            //    countLeftElement = countRightElement;
-            //else
-            //    countRightElement = countLeftElement;
-
-
+            int count = countElements;
+            countElements = countElements * 4;
+            var arrayPosition = ArrayTree();
 
             for (int i = 0; i < countElements; i++)
             {
-                _treeNode = elementTree.Dequeue();
-
-                if (_treeNode.LeftChild != null)
+                for (int j = 0; j < countElements; j++)
                 {
-                    if (_treeNode.Parent == null)
+                    if (arrayPosition[i, j] != 0)
                     {
-                        elementTree.Enqueue(_treeNode.LeftChild);
-                        _treeNode.LeftChild.Position = _treeNode.Position / 2;
+                        Console.SetCursorPosition(j, i);
+                        Console.WriteLine(arrayPosition[i, j]);
                     }
-                    else
-                    {
-                        elementTree.Enqueue(_treeNode.LeftChild);
-
-                        _treeNode.LeftChild.Position = PaymentLeft(_treeNode);
-                        //_treeNode.LeftChild.Position = _treeNode.Position - (_treeNode.Parent.Position - _treeNode.Position) / 2;
-                    }
-
-                }
-                if (_treeNode.RightChild != null)
-                {
-                    if (_treeNode.Parent == null)
-                    {
-                        elementTree.Enqueue(_treeNode.RightChild);
-
-                        _treeNode.RightChild.Position = treeNode.Position + countRightElement / 2;
-                    }
-                    else
-                    {
-                        elementTree.Enqueue(_treeNode.RightChild);
-                        _treeNode.RightChild.Position = PaymentRight(_treeNode);
-                        //_treeNode.RightChild.Position = ((_treeNode.Position - _treeNode.Parent.Position) / 2) + _treeNode.Position;
-                    }
-                }
-
-                if (elementTree.Count == 0)
-                    break;
-            }
-
-
-
-
-            int PaymentLeft (TreeNode tree)
-            {
-                if (tree.Parent.Position > tree.Position)
-                {
-                    return _treeNode.Position - (_treeNode.Parent.Position - _treeNode.Position) / 2;
-                }
-                else 
-                {
-                    return _treeNode.Position - (_treeNode.Position - _treeNode.Parent.Position) / 2;
                 }
             }
-            int PaymentRight(TreeNode tree)
-            {
-                if (tree.Parent.Position > tree.Position)
-                {
-                    return ((_treeNode.Parent.Position - _treeNode.Position) / 2) + _treeNode.Position;
-                }
-                else
-                {
-                    return ((_treeNode.Position - _treeNode.Parent.Position) / 2) + _treeNode.Position;
-                }
-            }
-
-
-
+            countElements = count;
         }
 
-
-
-
-        //расстояние корня дерева от левой стороны
-        private int WidthTree(TreeNode _TreeNode)
+        private int[,] ArrayTree()
         {
-            Queue<TreeNode> elementTree = new Queue<TreeNode>();
-            elementTree.Enqueue(_TreeNode);
-            TreeNode _treeNode = new TreeNode();
-            _treeNode = _TreeNode;
-            int countLeftElementsTree = 1;
-
-            //кол-во элементов слева от корня дерева
-            for (int i = 0; i < countElements; i++)
+            var array = new int[countElements, countElements];
+            var queueTreeNode = new Queue<TreeNode>();
+            var treeNode = new TreeNode();
+            queueTreeNode.Enqueue(root);
+            array[0, countElements / 2] = root.Value;
+            do
             {
-                _treeNode = elementTree.Dequeue();
-                if (_treeNode.LeftChild != null)
+                treeNode = queueTreeNode.Dequeue();
+                if (treeNode.LeftChild != null)
                 {
-                    elementTree.Enqueue(_treeNode.LeftChild);
-                    countLeftElementsTree += 1;
+                    array = AddArray(array, treeNode, treeNode.LeftChild);
+                    queueTreeNode.Enqueue(treeNode.LeftChild);
                 }
-                if (_treeNode.RightChild != null)
+                if (treeNode.RightChild != null)
                 {
-                    elementTree.Enqueue(_treeNode.RightChild);
-                    countLeftElementsTree += 1;
+                    array = AddArray(array, treeNode, treeNode.RightChild);
+                    queueTreeNode.Enqueue(treeNode.RightChild);
                 }
-
-                if (elementTree.Count == 0)
-                {
-                    return countLeftElementsTree * MaxElementTree();
-                }
-
-
-            }
-
-            return MaxElementTree()*10;
-        }
-        //кол-во элементов дерева слева от корня
-        private int MaxElementTree()
-        {
-            TreeNode _treeNode = new TreeNode();
-            _treeNode = treeNode;
-            for (int j = 0; j < countElements; j++)
-            {
-                if (_treeNode.RightChild != null)
-                {
-                    _treeNode = _treeNode.RightChild;
-                }
-            }
-            return _treeNode.Value.ToString().Length;
+            } while (queueTreeNode.Count != 0);
+            return array;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public void RemoveItem(int value) // удалить узел по значению
+        private int[,] AddArray(int[,] array, TreeNode treeNode, TreeNode newTreeNode)
         {
-            TreeNode tTreeNode = new TreeNode();
-            tTreeNode = treeNode;
-            for (int i = 0; i < countElements * 2; i++)
+            int position;
+            for (int i = 0; i < countElements; i++) // add array
             {
-                if (tTreeNode.Value == value)
+                for (int j = 0; j < countElements; j++)
                 {
-                    if (tTreeNode.LeftChild == null && tTreeNode.RightChild == null)
+                    if (array[i, j] == treeNode.Value)
                     {
-                        if (tTreeNode.Parent == null)
-                            treeNode = null;
-                        else
+                        if (treeNode.RightChild == newTreeNode)
                         {
-                            if (tTreeNode.Parent.LeftChild == tTreeNode)
-                                tTreeNode.Parent.LeftChild = null;
+                            position = countElements - j;
+                            if (position < countElements / 2)
+                            {
+                                position = position / 2;
+                                array[i + 1, j + position] = newTreeNode.Value;
+                                return array;
+                            }
                             else
-
-                                tTreeNode.Parent.RightChild = null;
-                            return;
+                            {
+                                position = (position - countElements) / 2;
+                                array[i + 1, j - position] = newTreeNode.Value;
+                                return array;
+                            }
                         }
-                    }
-                    else if (tTreeNode.LeftChild == null || tTreeNode.RightChild == null)
-                    {
-                        if (tTreeNode.LeftChild == null && tTreeNode.RightChild != null)
+                        else if (treeNode.LeftChild == newTreeNode)
                         {
-                            if (tTreeNode.Value <= tTreeNode.Parent.Value)
-                                tTreeNode.Parent.LeftChild = tTreeNode.RightChild;
-
+                            position = countElements - j;
+                            if (position < countElements / 2)
+                            {
+                                position = position / 2;
+                                array[i + 1, j - position] = newTreeNode.Value;
+                                return array;
+                            }
                             else
-                                tTreeNode.Parent.RightChild = tTreeNode.RightChild;
-                        }
-                        else
-                        {
-                            if (tTreeNode.Value <= tTreeNode.Parent.Value)
-                                tTreeNode.Parent.LeftChild = tTreeNode.LeftChild;
-
-                            else
-                                tTreeNode.Parent.RightChild = tTreeNode.LeftChild;
+                            {
+                                position = (position - countElements) / 2;
+                                array[i + 1, j + position] = newTreeNode.Value;
+                                return array;
+                            }
                         }
                     }
-                    else if (tTreeNode.Parent == null)
-                    {
-                        tTreeNode = SearcLeastElement(tTreeNode.RightChild);
-                        if (tTreeNode.Parent == null && tTreeNode.LeftChild == null && tTreeNode.RightChild == null)
-                        {
-                            treeNode = null;
-                            return;
-                        }
-                        else if (tTreeNode.RightChild == null)
-                        {
-                            treeNode.Value = tTreeNode.Value;
-                            tTreeNode.Parent.LeftChild = null;
-                            return;
-                        }
-                        else
-                        {
-                            treeNode.Value = tTreeNode.Value;
-                            tTreeNode.Parent.LeftChild = tTreeNode.RightChild;
-                            tTreeNode.RightChild.Parent = tTreeNode.Parent;
-                            return;
-                        }
-
-
-                    }
-                    else if (tTreeNode.Parent != null && tTreeNode.LeftChild != null && tTreeNode.RightChild != null)
-                    {
-                        TreeNode _tTreeNode = new TreeNode();
-                        _tTreeNode = SearcGreatestElement(tTreeNode.LeftChild);
-                        if (_tTreeNode.Parent.LeftChild == _tTreeNode)
-                            _tTreeNode.Parent.LeftChild = null;
-                        else
-                            _tTreeNode.Parent.RightChild = null;
-                        tTreeNode.Value = _tTreeNode.Value;
-                        return;
-                    }
                 }
-                else if (tTreeNode.Value >= value)
-                    tTreeNode = tTreeNode.LeftChild;
-                else
-                    tTreeNode = tTreeNode.RightChild;
             }
-        }
-
-        private TreeNode SearcLeastElement(TreeNode _treeNode)
-        {
-            for (int i = 0; i < countElements; i++)
-            {
-                if (_treeNode.LeftChild == null)
-                {
-                    return _treeNode;
-                }
-                else
-                    _treeNode = _treeNode.LeftChild;
-            }
-            return null;
-        }
-        private TreeNode SearcGreatestElement(TreeNode _treeNode)
-        {
-            for (int i = 0; i < countElements; i++)
-            {
-                if (_treeNode.RightChild == null)
-                {
-                    return _treeNode;
-                }
-                else
-                    _treeNode = _treeNode.RightChild;
-            }
-            return null;
+            return array;
         }
     }
-
-
 
     public static class TreeHelper
     {
@@ -526,5 +356,4 @@ namespace Algorithms_and_data_structures
         public int Depth { get; set; }
         public TreeNode Node { get; set; }
     }
-
 }
