@@ -10,17 +10,17 @@ namespace Algorithms_and_data_structures
     {
         public class TestCase
         {
-            public string number { get; set; }
+            public string Number { get; set; }
             public int Expected { get; set; }
         }
         static void Main(string[] args)
         {
             // Задание №1
-            var testCase1_1 = new TestCase { number = "22", Expected = 4 };
-            var testCase1_2 = new TestCase { number = "3001", Expected = 2 };
-            var testCase1_3 = new TestCase { number = "7", Expected = 2 };
-            var testCase1_4 = new TestCase { number = "12 2", Expected = 0 };
-            var testCase1_5 = new TestCase { number = "dsfsd", Expected = 0 };
+            var testCase1_1 = new TestCase { Number = "22", Expected = 4 };
+            var testCase1_2 = new TestCase { Number = "3001", Expected = 2 };
+            var testCase1_3 = new TestCase { Number = "7", Expected = 2 };
+            var testCase1_4 = new TestCase { Number = "12 2", Expected = 0 };
+            var testCase1_5 = new TestCase { Number = "dsfsd", Expected = 0 };
 
             TestNumber(testCase1_1);
             TestNumber(testCase1_2);
@@ -29,11 +29,11 @@ namespace Algorithms_and_data_structures
             TestNumber(testCase1_5);
 
             // Задание №2
-            var testCase2_1 = new TestCase { number = "22", Expected = 10946 };
-            var testCase2_2 = new TestCase { number = "11", Expected = 55 };
-            var testCase2_3 = new TestCase { number = "7", Expected = 8 };
-            var testCase2_4 = new TestCase { number = "12 2", Expected = 0 };
-            var testCase2_5 = new TestCase { number = "dsfsd", Expected = 0 };
+            var testCase2_1 = new TestCase { Number = "22", Expected = 17711 };
+            var testCase2_2 = new TestCase { Number = "11", Expected = 89 };
+            var testCase2_3 = new TestCase { Number = "7", Expected = 13 };
+            var testCase2_4 = new TestCase { Number = "12 2", Expected = 0 };
+            var testCase2_5 = new TestCase { Number = "dsfsd", Expected = 0 };
 
             TestFibonacciRecursion(testCase2_1);
             TestFibonacciRecursion(testCase2_2);
@@ -55,36 +55,31 @@ namespace Algorithms_and_data_structures
         {
             try
             {
-                var acactual = NumberOfDivisors(testCase.number);
-                if (acactual == testCase.Expected)
-                    Console.WriteLine("VALID TEST");
-                else
-                    Console.WriteLine("INVALID TEST");
+                NumberOfDivisors(int.Parse(testCase.Number));
+                Console.WriteLine("VALID TEST");
             }
             catch (Exception)
             {
-                Console.WriteLine("VALID EXCEPTION TEST");
+                Console.WriteLine("INVALID TEST");
             }
 
         }
-        static int NumberOfDivisors(string number)
+        static void NumberOfDivisors(int n)
         {
-            int n = Convert.ToInt32(number);
             int d = 2;
             int i = 2;
 
-            do
+            while (i < n) 
             {
                 if (n % i == 0)
                     d++;
                 i++;
-            } while (i < n);
+            };
 
             if (d == 0)
                 Console.WriteLine("Простое");
             else
-                Console.WriteLine($"Не простое, кол-во делителей = {d}");
-            return d;
+                Console.WriteLine("Не простое");
         }
 
         // Задание №2
@@ -117,7 +112,7 @@ namespace Algorithms_and_data_structures
         static int FibonacciNumbersRecursion(int countNamber)
         {
             if (countNamber == 1 || countNamber == 2)
-                return countNamber;
+                return 1;
             
             else
                 return (FibonacciNumbersRecursion(countNamber-2) + FibonacciNumbersRecursion(countNamber-1));
@@ -156,7 +151,7 @@ namespace Algorithms_and_data_structures
         {
             try
             {
-                int acactual = FibonacciNumbersRecursion(Convert.ToInt32(testCase.number));
+                int acactual = FibonacciNumbersRecursion(Convert.ToInt32(testCase.Number));
                 if (acactual == testCase.Expected)
                     Console.WriteLine("VALID TEST");
                 else
@@ -171,7 +166,7 @@ namespace Algorithms_and_data_structures
         {
             try
             {
-                int acactual = FibonacciNumbersCycle(Convert.ToInt32(testCase.number));
+                int acactual = FibonacciNumbersCycle(Convert.ToInt32(testCase.Number));
                 if (acactual == testCase.Expected)
                     Console.WriteLine("VALID TEST");
                 else
