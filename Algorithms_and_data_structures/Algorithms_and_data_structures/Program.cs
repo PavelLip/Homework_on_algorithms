@@ -112,7 +112,11 @@ namespace Algorithms_and_data_structures
         static int FibonacciNumbersRecursion(int countNamber)
         {
             if (countNamber == 1 || countNamber == 2)
+<<<<<<< HEAD
                 return 1;
+=======
+                return countNamber;
+>>>>>>> lesson_1
             
             else
                 return (FibonacciNumbersRecursion(countNamber-2) + FibonacciNumbersRecursion(countNamber-1));
