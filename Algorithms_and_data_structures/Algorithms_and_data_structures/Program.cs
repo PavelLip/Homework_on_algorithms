@@ -114,47 +114,15 @@ namespace Algorithms_and_data_structures
             return sum;                                             //O(1)
         }
 
-
         static int FibonacciNumbersRecursion(int countNamber)
         {
-            int firstNumber = 0, secondNumber = 1;
-            int finishNumber;
-            if (countNamber == 1)
-            {
-                finishNumber = firstNumber;
-                //Console.WriteLine($"Значение числа фибоначи равняется {firstNumber}");
-            }
-            else if (countNamber == 2)
-            {
-                //Console.WriteLine($"Значение числа фибоначи равняется {secondNumber}");
-                finishNumber = secondNumber;
-            }
+            if (countNamber == 1 || countNamber == 2)
+                return countNamber;
+            
             else
-            {
-                (firstNumber, secondNumber) = RecursionFibonacci(firstNumber, secondNumber, countNamber);
-                finishNumber = secondNumber;
-                //Console.WriteLine($"Значение числа фибоначи равняется {secondNumber}");
-            }
-            return finishNumber;
+                return (FibonacciNumbersRecursion(countNamber-2) + FibonacciNumbersRecursion(countNamber-1));
         }
-        static (int, int) RecursionFibonacci(int firstNumber, int secondNumber, int countNamber)
-        {
-            if (countNamber <= 2)
-            {
-                firstNumber = 0;
-                secondNumber = 1;
-                return (firstNumber, secondNumber);
-            }
-            else
-            {
-                countNamber -= 1;
-                (firstNumber, secondNumber) = RecursionFibonacci(firstNumber, secondNumber, countNamber);
-                int newNumber = firstNumber + secondNumber;
-                firstNumber = secondNumber;
-                secondNumber = newNumber;
-                return (firstNumber, secondNumber);
-            }
-        }
+
         static int FibonacciNumbersCycle(int countNamber)
         {
             int finishNumber;
