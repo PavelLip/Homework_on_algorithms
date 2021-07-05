@@ -112,12 +112,7 @@ namespace Algorithms_and_data_structures
         static int FibonacciNumbersRecursion(int countNamber)
         {
             if (countNamber == 1 || countNamber == 2)
-<<<<<<< HEAD
                 return 1;
-=======
-                return countNamber;
->>>>>>> lesson_1
-            
             else
                 return (FibonacciNumbersRecursion(countNamber-2) + FibonacciNumbersRecursion(countNamber-1));
         }
@@ -127,16 +122,12 @@ namespace Algorithms_and_data_structures
             int finishNumber;
             int firstNumber = 0, secondNumber = 1;
             if (countNamber == 1)
-            {
-                //Console.WriteLine($"Значение числа фибоначи равняется {firstNumber}");
                 finishNumber = firstNumber;
-            }
+
 
             else if (countNamber == 2)
-            {
                 finishNumber = secondNumber;
-                //Console.WriteLine($"Значение числа фибоначи равняется {secondNumber}");
-            }
+            
             else
             {
                 int newNumber;
@@ -147,7 +138,6 @@ namespace Algorithms_and_data_structures
                     secondNumber = newNumber;
                 }
                 finishNumber = secondNumber;
-                //Console.WriteLine($"Значение числа фибоначи равняется {secondNumber}");
             }
             return finishNumber;
         }
