@@ -16,7 +16,7 @@ namespace Algorithms_and_data_structures
 
             Tree t = new Tree();
             int countElementTree = 25;
-            Random rnd = new Random();
+            Random rnd = new Random(130);
             t.AddItem(10);
             for (int i = 0; i < countElementTree; i++)
             {

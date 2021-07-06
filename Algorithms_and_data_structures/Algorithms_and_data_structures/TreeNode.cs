@@ -222,7 +222,7 @@ namespace Algorithms_and_data_structures
         {
             Console.Clear();
             int count = countElements;
-            countElements = countElements * 4;
+            countElements = countElements * countElements/10;
             var arrayPosition = ArrayTree();
 
             for (int i = 0; i < countElements; i++)
@@ -262,7 +262,6 @@ namespace Algorithms_and_data_structures
             } while (queueTreeNode.Count != 0);
             return array;
         }
-
         private int[,] AddArray(int[,] array, TreeNode treeNode, TreeNode newTreeNode)
         {
             int position;
@@ -274,35 +273,15 @@ namespace Algorithms_and_data_structures
                     {
                         if (treeNode.RightChild == newTreeNode)
                         {
-                            position = countElements - j;
-                            if (position < countElements / 2)
-                            {
-                                position = position / 2;
-                                array[i + 1, j + position] = newTreeNode.Value;
-                                return array;
-                            }
-                            else
-                            {
-                                position = (position - countElements) / 2;
-                                array[i + 1, j - position] = newTreeNode.Value;
-                                return array;
-                            }
+                            position = (int)(countElements / Math.Pow(2, i + 1));
+                            array[i + 1, j + position / 2] = newTreeNode.Value;
+                            return array;
                         }
                         else if (treeNode.LeftChild == newTreeNode)
                         {
-                            position = countElements - j;
-                            if (position < countElements / 2)
-                            {
-                                position = position / 2;
-                                array[i + 1, j - position] = newTreeNode.Value;
-                                return array;
-                            }
-                            else
-                            {
-                                position = (position - countElements) / 2;
-                                array[i + 1, j + position] = newTreeNode.Value;
-                                return array;
-                            }
+                            position = (int)(countElements / Math.Pow(2, i + 1));
+                            array[i + 1, j - position / 2] = newTreeNode.Value;
+                            return array;
                         }
                     }
                 }
@@ -324,7 +303,6 @@ namespace Algorithms_and_data_structures
             {
                 var element = bufer.Dequeue();
                 returnArray.Add(element);
-
                 var depth = element.Depth + 1;
 
                 if (element.Node.LeftChild != null)
@@ -346,7 +324,6 @@ namespace Algorithms_and_data_structures
                     bufer.Enqueue(right);
                 }
             }
-
             return returnArray.ToArray();
         }
     }
